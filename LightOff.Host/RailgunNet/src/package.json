@@ -1,0 +1,15 @@
+{
+  "name": "railgunnet",
+  "version": "0.0.1",
+  "displayName": "RailgunNet",
+  "description": "Unity Package for RailgunNet",
+  "unity": "2022.1",
+  "keywords": [
+    "network"
+  ],
+  "author": {
+    "name": "Alexander Shoulson",
+    "url": "http://ashoulson.com"
+  },
+  "type": "library"
+}
