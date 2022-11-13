@@ -1,0 +1,15 @@
+{
+  "name": "lightoff.logic",
+  "version": "0.0.1",
+  "displayName": "LightOff.Logic",
+  "description": "Implementation of the actual gameplay logic",
+  "unity": "2022.1",
+  "keywords": [
+    "logic",
+    "gameplay"
+  ],
+  "author": {
+    "name": "Philipp Walser"
+  },
+  "type": "library"
+}

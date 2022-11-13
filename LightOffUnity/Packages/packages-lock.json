@@ -271,6 +271,24 @@
       },
       "url": "https://package.openupm.com"
     },
+    "lightoff.logic": {
+      "version": "file:../../LightOff.Host/LightOff.Logic/src",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
+    "lightoff.messaging": {
+      "version": "file:../../LightOff.Host/LightOff.Messaging/src",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
+    "railgunnet": {
+      "version": "file:../../LightOff.Host/RailgunNet/src",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

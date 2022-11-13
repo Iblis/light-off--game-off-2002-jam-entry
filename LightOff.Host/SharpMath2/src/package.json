@@ -1,0 +1,17 @@
+{
+  "name": "sharpmath2",
+  "version": "0.0.1",
+  "displayName": "SharpMath2",
+  "description": "Unity Package for SharpMath2",
+  "unity": "2022.1",
+  "keywords": [
+    "math",
+    "collission",
+    "2d"
+  ],
+  "author": {
+    "name": "Timothy Moore",
+    "url": "https://github.com/Tjstretchalot/SharpMath2"
+  },
+  "type": "library"
+}

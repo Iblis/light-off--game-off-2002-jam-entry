@@ -14,5 +14,5 @@ Of course, evading the ghost is not an easy feat, because the ghost is invisible
 In order of when they were added to the project
 
 * [hadashiA/VContainer](https://github.com/hadashiA/VContainer)
-* [ashoulson/RailgunNet](https://github.com/ashoulson/RailgunNet), adapted as a UPM package using the fork from [araex/RailgunNet](https://github.com/araex/RailgunNet)
-
+* [ashoulson/RailgunNet](https://github.com/ashoulson/RailgunNet), adapted for being used as an UPM package using the fork from [araex/RailgunNet](https://github.com/araex/RailgunNet)
+* [Tjstretchalot/SharpMath2](https://github.com/Tjstretchalot/SharpMath2), adapted for being used as an UPM package

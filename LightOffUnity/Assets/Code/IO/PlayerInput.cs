@@ -3,13 +3,18 @@
 // which can be found in the root folder of this source code package.
 using System.Numerics;
 
-namespace LightOff.Presentation
+namespace LightOff.IO
 {
-    public class PlayerInput
+    public struct PlayerInput
     {
         public float DirectionX => _currentInputData.X;
 
         public float DirectionY => _currentInputData.Y;
+
+        public PlayerInput(Vector2 input)
+        {
+            _currentInputData = input;
+        }
         
         public bool Update(Vector2 inputData)
         {
@@ -21,6 +26,6 @@ namespace LightOff.Presentation
             return false;
         }
 
-        Vector2 _currentInputData = Vector2.Zero;
+        Vector2 _currentInputData;
     }
 }

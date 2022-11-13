@@ -1,16 +1,13 @@
 {
-    "name": "LightOff.Presentation",
-    "rootNamespace": "LightOff.Presentation",
+    "name": "Lightoff.Messaging",
+    "rootNamespace": "LightOff.Messaging",
     "references": [
-        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
-        "GUID:5a577d9add6154d49917f25785c14aef",
-        "GUID:6cdbb83a53172d84faba19e66ef5f83d",
         "GUID:645c8bb4a88fd644da8c35b890b39be6",
         "GUID:07f6107e84f499946a6e1921013e035a"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": true,
+    "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,

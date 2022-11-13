@@ -1,0 +1,15 @@
+{
+  "name": "lightoff.messaging",
+  "version": "0.0.1",
+  "displayName": "LightOff.Messaging",
+  "description": "Messaging classes used on both server and client",
+  "unity": "2022.1",
+  "keywords": [
+    "network",
+    "messaging"
+  ],
+  "author": {
+    "name": "Philipp Walser"
+  },
+  "type": "library"
+}
