@@ -7,4 +7,8 @@
     <RootNamespace>LightOff.Logic</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SharpMath2\SharpMath2.csproj" />
+  </ItemGroup>
+
 </Project>

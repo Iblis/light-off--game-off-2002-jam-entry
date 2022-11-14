@@ -1,4 +1,7 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 
 namespace SharpMath2
 {
@@ -594,7 +597,7 @@ namespace SharpMath2
             // for any point on that line. So we pick a point that's convienent (the start or end).
             var lineProjectedOntoItsNormal = Vector2.Dot(actualLine.Start, actualLine.Normal);
             var centerOfCircleProjectedOntoNormalOfLine = Vector2.Dot(circleCenter, actualLine.Normal);
-            var closestDistance = Math.Abs(centerOfCircleProjectedOntoNormalOfLine - lineProjectedOntoItsNormal);
+            var closestDistance = MathF.Abs(centerOfCircleProjectedOntoNormalOfLine - lineProjectedOntoItsNormal);
 
             // Step 1a
             if(strict)

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "railgunnet": "file:../../LightOff.Host/RailgunNet/src",
+    "sharpmath2": "file:../../LightOff.Host/SharpMath2/src",
     "lightoff.messaging": "file:../../LightOff.Host/LightOff.Messaging/src",
     "lightoff.logic": "file:../../LightOff.Host/LightOff.Logic/src",
     "com.unity.collab-proxy": "1.17.2",

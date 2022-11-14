@@ -1,4 +1,7 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 
 namespace SharpMath2
 {
@@ -86,6 +89,13 @@ namespace SharpMath2
         /// If this polygon is defined clockwise
         /// </summary>
         public readonly bool Clockwise;
+
+
+        public Polygon2(Vector2[] vertices, Vector2 center)
+            : this(vertices)
+        {
+            Center = center;
+        }
 
         /// <summary>
         /// Initializes a polygon with the specified vertices

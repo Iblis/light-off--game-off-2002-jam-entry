@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace SharpMath2
 {
@@ -34,8 +35,8 @@ namespace SharpMath2
         {
             Axis = axis;
 
-            Min = Math.Min(min, max);
-            Max = Math.Max(min, max);
+            Min = MathF.Min(min, max);
+            Max = MathF.Max(min, max);
         }
 
         /// <summary>

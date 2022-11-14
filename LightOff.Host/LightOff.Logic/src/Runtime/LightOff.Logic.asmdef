@@ -1,6 +1,9 @@
 {
     "name": "Lightoff.Logic",
     "rootNamespace": "LightOff.Logic",
+    "references": [
+        "GUID:74163faf2ed5c084f9ee4ab40738e04d"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

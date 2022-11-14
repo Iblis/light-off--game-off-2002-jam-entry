@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace SharpMath2
 {
@@ -67,10 +68,10 @@ namespace SharpMath2
             float tmpX1 = min.X, tmpX2 = max.X;
             float tmpY1 = min.Y, tmpY2 = max.Y;
 
-            min.X = Math.Min(tmpX1, tmpX2);
-            min.Y = Math.Min(tmpY1, tmpY2);
-            max.X = Math.Max(tmpX1, tmpX2);
-            max.Y = Math.Max(tmpY1, tmpY2);
+            min.X = MathF.Min(tmpX1, tmpX2);
+            min.Y = MathF.Min(tmpY1, tmpY2);
+            max.X = MathF.Max(tmpX1, tmpX2);
+            max.Y = MathF.Max(tmpY1, tmpY2);
 
             Vertices = new Vector2[]
             {

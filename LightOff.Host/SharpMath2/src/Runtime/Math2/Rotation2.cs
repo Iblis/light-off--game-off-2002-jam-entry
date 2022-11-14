@@ -1,4 +1,6 @@
-﻿namespace SharpMath2
+﻿using System;
+
+namespace SharpMath2
 {
     /// <summary>
     /// Describes a rotation about the z axis, with sin and cos of theta
@@ -116,13 +118,13 @@
         {
             if (theta < 0)
             {
-                int numToAdd = (int)Math.Ceiling((-theta) / (Math.PI * 2));
-                return theta + (float)Math.PI * 2 * numToAdd;
+                int numToAdd = (int)MathF.Ceiling((-theta) / (MathF.PI * 2));
+                return theta + (float)MathF.PI * 2 * numToAdd;
             }
             else if (theta >= Math.PI * 2)
             {
-                int numToReduce = (int)Math.Floor(theta / (Math.PI * 2));
-                return theta - (float)Math.PI * 2 * numToReduce;
+                int numToReduce = (int)MathF.Floor(theta / (MathF.PI * 2));
+                return theta - (float)MathF.PI * 2 * numToReduce;
             }
             return theta;
         }
