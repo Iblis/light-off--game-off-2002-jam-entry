@@ -9,8 +9,15 @@ using UnityEngine;
 
 namespace LightOff.IO.Entity
 {
-    public class EntityClient : RailEntityClient<EntityState, MoveCommand>, IGhostTracker
+    public class EntityClient : RailEntityClient<EntityState, MoveCommand>, IEntity
     {
+        public Vector3 Position => new Vector3(State.PosX, State.PosY, 0);
+
+        public float AngleInDegrees => State.Angle * Mathf.Rad2Deg;
+
+        IEntityState IEntity.State => State;
+
+
         public EntityClient(IEntitySignals signals) 
         {
             _signals= signals;
@@ -51,11 +58,18 @@ namespace LightOff.IO.Entity
             _signals.OnWriteCommand(this, toPopulate);
         }
 
+        /// <summary>
+        /// Activate producing commands, which will be sent to the server
+        /// </summary>
         internal void StartProducingCommands()
         {
             ProducesCommands = true;
         }
 
+        /// <summary>
+        /// Prevent Entity from sending any further commands, 
+        /// remove any queued commands (otherwise those will continue to be sent) 
+        /// </summary>
         internal void StopProducingCommands()
         {
             ProducesCommands= false;
@@ -64,17 +78,7 @@ namespace LightOff.IO.Entity
                 ClearCommands();
             }
         }
-
-        bool IGhostTracker.IsActive => true;
-
-        float IEntity.PosX { get => State.PosX; set => State.PosX = value; }
-        float IEntity.PosY { get => State.PosY; set => State.PosY = value; }
-        float IEntity.Angle { get => State.Angle; set => State.Angle = value; }
-
-        public Vector3 Position => new Vector3(State.PosX, State.PosY, 0);
-
-        public float AngleInDegrees => State.Angle * Mathf.Rad2Deg;
-
+        
         readonly IEntitySignals _signals;
     }
 }

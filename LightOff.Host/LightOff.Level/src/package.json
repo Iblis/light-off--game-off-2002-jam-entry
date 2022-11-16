@@ -1,0 +1,16 @@
+{
+  "name": "lightoff.level",
+  "version": "0.0.1",
+  "displayName": "LightOff.Level",
+  "description": "Creation of the Level and Colliders",
+  "unity": "2022.1",
+  "keywords": [
+    "collission",
+    "collider",
+    "level"
+  ],
+  "author": {
+    "name": "Philipp Walser"
+  },
+  "type": "library"
+}

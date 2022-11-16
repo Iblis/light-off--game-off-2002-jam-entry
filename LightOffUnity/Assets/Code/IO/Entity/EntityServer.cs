@@ -9,16 +9,13 @@ namespace LightOff.IO.Entity
 {
     internal class EntityServer : RailEntityServer<EntityState, MoveCommand>, IEntity
     {
-        public ServerWorld World { get; set; }
+        IEntityState IEntity.State => State;
+
+        public ServerWorld CommandHandler { get; set; }
         
         protected override void ApplyCommand(MoveCommand toApply)
         {
-            World.ApplyCommand(this, toApply);       
+            CommandHandler.ApplyCommand(this, toApply);       
         }
-
-        float IEntity.PosX { get => State.PosX; set => State.PosX = value; }
-        float IEntity.PosY { get => State.PosY; set => State.PosY = value; }
-        float IEntity.Angle { get => State.Angle; set => State.Angle = value; }
-
     }
 }

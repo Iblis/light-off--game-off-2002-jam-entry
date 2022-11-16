@@ -6,7 +6,7 @@ using System;
 
 namespace LightOff.IO
 {
-    internal class DummyPeer : IRailNetPeer
+    public class DummyPeer : IRailNetPeer
     {
         public object PlayerData { get; set; }
 

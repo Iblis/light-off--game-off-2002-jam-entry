@@ -8,12 +8,15 @@ using UnityEngine;
 
 namespace LightOff.IO
 {
-    internal class ServerWorld : World
+    // TODO: maybe rename this class to avoid confusion with IWorld / PhysicWorld
+    internal class ServerWorld : CommandHandler
     {
+        public ServerWorld(IWorld world) : base(world) { }
+
         internal void ApplyCommand(EntityServer entity, MoveCommand command)
         {
             command.EnsureCorrectPrecision();           
-            base.ApplyCommand(entity, command, Time.fixedDeltaTime);
+            base.ApplyCommand(entity.State, command, Time.fixedDeltaTime);
         }
     }
 }

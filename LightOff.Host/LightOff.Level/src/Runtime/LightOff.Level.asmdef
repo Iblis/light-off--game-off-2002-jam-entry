@@ -1,0 +1,17 @@
+{
+    "name": "Lightoff.Level",
+    "rootNamespace": "LightOff.Level",
+    "references": [
+        "GUID:74163faf2ed5c084f9ee4ab40738e04d",
+        "GUID:07f6107e84f499946a6e1921013e035a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

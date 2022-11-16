@@ -2,8 +2,9 @@
   "dependencies": {
     "railgunnet": "file:../../LightOff.Host/RailgunNet/src",
     "sharpmath2": "file:../../LightOff.Host/SharpMath2/src",
-    "lightoff.messaging": "file:../../LightOff.Host/LightOff.Messaging/src",
     "lightoff.logic": "file:../../LightOff.Host/LightOff.Logic/src",
+    "lightoff.messaging": "file:../../LightOff.Host/LightOff.Messaging/src",
+    "lightoff.level": "file:../../LightOff.Host/LightOff.Level/src",
     "com.unity.collab-proxy": "1.17.2",
     "com.unity.feature.2d": "1.0.0",
     "com.unity.ide.rider": "3.0.15",

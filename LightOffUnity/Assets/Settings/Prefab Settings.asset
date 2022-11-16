@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cc8af91580f03e4eba1132e97f39990, type: 3}
   m_Name: Prefab Settings
   m_EditorClassIdentifier: 
-  PlayerPrefab: {fileID: 576207802228977158, guid: c3e16d103d020c347b799fac68c965d0, type: 3}
+  PlayerPrefab: {fileID: 7168237590683739912, guid: c3e16d103d020c347b799fac68c965d0, type: 3}
+  ObstaclePrefab: {fileID: 3498407451405693170, guid: 23dda13ec0b97af4682f46cba0d2ee85, type: 3}

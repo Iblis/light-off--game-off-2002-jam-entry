@@ -14,11 +14,11 @@ namespace LightOff.Messaging
 
         public void EnsureCorrectPrecision()
         {
-            if(DirectionX.IsNearZero())
+            if(DirectionX.IsApproximatelyZero())
             {
                 DirectionX = 0;
             }
-            if(DirectionY.IsNearZero()) 
+            if(DirectionY.IsApproximatelyZero()) 
             {
                 DirectionY = 0;
             }

@@ -8,6 +8,8 @@ namespace LightOff.Presentation
     [CreateAssetMenu(fileName = "Prefab Settings", menuName = "LightOff/Settings/Prefab")]
     public class PrefabSettings : ScriptableObject
     {
-        public GameObject PlayerPrefab;
+        public Player PlayerPrefab;
+
+        public GameObject ObstaclePrefab;
     }
 }

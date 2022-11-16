@@ -271,6 +271,12 @@
       },
       "url": "https://package.openupm.com"
     },
+    "lightoff.level": {
+      "version": "file:../../LightOff.Host/LightOff.Level/src",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "lightoff.logic": {
       "version": "file:../../LightOff.Host/LightOff.Logic/src",
       "depth": 0,

@@ -5,8 +5,6 @@ namespace LightOff.Logic
 {
     public interface IEntity
     {
-        public float PosX { get; set; }
-        public float PosY { get; set; }
-        public float Angle { get; set; }
+        IEntityState State { get; }
     }
 }

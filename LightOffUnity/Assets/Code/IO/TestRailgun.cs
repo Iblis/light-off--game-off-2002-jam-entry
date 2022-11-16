@@ -11,8 +11,9 @@ namespace LightOff.IO
 {
     public class TestRailgun : ITickable
     {
-        public TestRailgun(IEntitySignals signals) 
+        public TestRailgun(IEntitySignals signals, IServer server) 
         {
+            _server = server;
             _registry.AddEntityType<EntityClient, EntityState>(new []{ signals });
             _registry.SetCommandType<MoveCommand>();
             //_registry.AddEventType<>();
@@ -31,7 +32,7 @@ namespace LightOff.IO
 
         static readonly RailRegistry _registry = new (RailgunNet.Component.Client);
         readonly RailClient _client;
-        readonly DummyServer _server = new ();
+        readonly IServer _server;
         readonly RailClientRoom _room;
     }
 }

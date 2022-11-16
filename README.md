@@ -16,3 +16,4 @@ In order of when they were added to the project
 * [hadashiA/VContainer](https://github.com/hadashiA/VContainer)
 * [ashoulson/RailgunNet](https://github.com/ashoulson/RailgunNet), adapted for being used as an UPM package using the fork from [araex/RailgunNet](https://github.com/araex/RailgunNet)
 * [Tjstretchalot/SharpMath2](https://github.com/Tjstretchalot/SharpMath2), adapted for being used as an UPM package
+* [benjitrosch/spatial-hash](https://github.com/benjitrosch/spatial-hash) with small modifications (generic SpatialHash, find neighbours of Cell )

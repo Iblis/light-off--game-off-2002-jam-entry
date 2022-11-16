@@ -8,14 +8,14 @@ namespace LightOff.Logic.src.Runtime
     public static class FloatExtensions
     {
 
-        public static bool IsNear(this float a, float b)
+        public static bool IsApproximately(this float a, float b)
         {
             return MathF.Abs(a - b) < COORDINATE_PRECISION;
         }
 
-        public static bool IsNearZero(this float a)
+        public static bool IsApproximatelyZero(this float a)
         {
-            return a.IsNear(ZERO);
+            return a.IsApproximately(ZERO);
         }
 
         const float ZERO = 0.0f;

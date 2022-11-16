@@ -12,11 +12,18 @@ using VContainer.Unity;
 
 namespace LightOff.Presentation
 {
-    internal class ClientWorld : World, IClientWorld, ITickable
+    internal class ClientWorld : CommandHandler, IClientWorld, ITickable
     {
-        public ClientWorld(Func<GameObject> playerFactory)
+        public ClientWorld(IWorld world, Func<Player> playerFactory, Func<GameObject> obstacleFactory ) : base(world)
         {
+            _world = world;
             _playerFactory = playerFactory;
+            foreach(var obstacle in _world.Obstacles)
+            {
+                var obstacleGO = obstacleFactory();
+                obstacleGO.transform.position = new Vector3(obstacle.Position.X, obstacle.Position.Y, 0);
+                obstacleGO.transform.localScale = new Vector3(obstacle.SizeX, obstacle.SizeY, 1);
+            }
         }
 
         public void Tick()
@@ -33,11 +40,20 @@ namespace LightOff.Presentation
         {
             var newPlayer = _playerFactory();
             _players.Add(entity, newPlayer);
+            if (entity.State.EntityTypeId == 0)
+            {
+                _world.AddTracker(entity);
+            }
+            else
+            {
+                _world.SetGhost(entity);
+            }
+            _world.SetGhost(new DummyGhost());
         }
 
         void IClientWorld.ApplyCommand(EntityClient entity, MoveCommand command)
         {
-            base.ApplyCommand(entity, command, Time.fixedDeltaTime);
+            base.ApplyCommand(entity.State, command, Time.fixedDeltaTime);
         }
 
         void IClientWorld.RemoveEntity(EntityClient entity)
@@ -47,10 +63,11 @@ namespace LightOff.Presentation
                 // TODO: Destroy GameObject
                 _players.Remove(entity);
             }
-
         }
 
-        readonly Func<GameObject> _playerFactory;
-        readonly Dictionary<EntityClient, GameObject> _players = new ();
+        readonly IWorld _world;
+        readonly Func<Player> _playerFactory;
+        readonly Func<GameObject> _obstacleFactory;
+        readonly Dictionary<EntityClient, Player> _players = new ();
     }
 }
