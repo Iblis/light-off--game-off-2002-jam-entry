@@ -75,6 +75,6 @@ namespace LightOff.Logic
         //readonly Rect2 _ghost;
         //Vector2 _ghostPosition;
 
-        const float MOVEMENT_SPEED = 2.5f;
+        const float MOVEMENT_SPEED = 3.5f;
     }
 }

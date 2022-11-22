@@ -26,7 +26,9 @@ namespace LightOff.Presentation
             builder.Register<IEntitySignals, EntitySignals>(Lifetime.Singleton);
             builder.RegisterEntryPoint<InputSystem>(Lifetime.Singleton);
             builder.RegisterEntryPoint<ClientWorld>(Lifetime.Singleton);
-            builder.RegisterEntryPoint<TestRailgun>(Lifetime.Singleton);
+            //builder.RegisterEntryPoint<TestRailgun>(Lifetime.Singleton);
+
+            RegisterRailgun(builder);
 
             builder.RegisterFactory<Player>((IObjectResolver container) =>
             {
@@ -43,6 +45,12 @@ namespace LightOff.Presentation
                     return container.Instantiate(_prefabSettings.ObstaclePrefab);
                 };
             }, Lifetime.Singleton);
+        }
+
+        void RegisterRailgun(IContainerBuilder builder)
+        {
+            var installer = new RailgunInstaller();
+            installer.Install(builder);
         }
     }
 }

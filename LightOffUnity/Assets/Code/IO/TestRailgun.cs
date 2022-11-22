@@ -26,7 +26,7 @@ namespace LightOff.IO
 
         public void Tick()
         {
-            _server.Update();
+            //_server.Update();
             _client.Update();   
         }
 

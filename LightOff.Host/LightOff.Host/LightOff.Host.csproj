@@ -7,7 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <PackageReference Include="LogicLooper" Version="1.1.0" />
+    <PackageReference Include="Nerdbank.Streams" Version="2.9.112" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LightOff.Level\LightOff.Level.csproj" />
+    <ProjectReference Include="..\LightOff.Messaging\LightOff.Messaging.csproj" />
+    <ProjectReference Include="..\RailgunNet\RailgunNet.csproj" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <InternalsVisibleTo Include="LightOff.Host.Tests" />
+  </ItemGroup>
+
 
 </Project>

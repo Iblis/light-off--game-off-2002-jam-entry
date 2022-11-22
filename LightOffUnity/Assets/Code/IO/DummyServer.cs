@@ -2,12 +2,11 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md',
 // which can be found in the root folder of this source code package.
 using LightOff.Messaging;
-using LightOff.IO.Entity;
 using RailgunNet.Connection.Server;
 using RailgunNet.Factory;
-using System.Linq;
 using LightOff.Logic;
-using System.Numerics;
+using LightOff.Messaging.Server;
+using UnityEngine;
 
 namespace LightOff.IO
 {
@@ -16,7 +15,7 @@ namespace LightOff.IO
         public DummyServer(IWorld world)
         {
             _world = world;
-            _commandHandler = new ServerWorld(world);
+            _commandHandler = new Messaging.Server.CommandHandler(world);
             _registry.AddEntityType<EntityServer, EntityState>();
             _registry.SetCommandType<MoveCommand>();
             _server = new RailServer(_registry);
@@ -38,7 +37,7 @@ namespace LightOff.IO
             EntityServer entityServerSide = _room.AddNewEntity<EntityServer>();
             entityServerSide.AssignController(client);
             entityServerSide.CommandHandler = _commandHandler;
-            entityServerSide.State.Position = new Vector2(10, 10);
+            entityServerSide.State.Position = new System.Numerics.Vector2(10, 10);
             entityServerSide.State.ExecutesAction = true;
             _world.AddTracker(entityServerSide);
             _world.SetGhost(new DummyGhost());
@@ -48,11 +47,12 @@ namespace LightOff.IO
 
         public void Update()
         {
+            _commandHandler.UpdateDeltaTime(Time.deltaTime);
             _server.Update();
         }
 
         readonly IWorld _world;
-        readonly ServerWorld _commandHandler;
+        readonly Messaging.Server.CommandHandler _commandHandler;
         readonly RailRegistry _registry = new RailRegistry(RailgunNet.Component.Server);
         readonly RailServer _server;
         readonly RailServerRoom _room;

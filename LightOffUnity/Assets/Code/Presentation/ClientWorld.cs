@@ -53,7 +53,7 @@ namespace LightOff.Presentation
 
         void IClientWorld.ApplyCommand(EntityClient entity, MoveCommand command)
         {
-            base.ApplyCommand(entity.State, command, Time.fixedDeltaTime);
+            ApplyCommand(entity.State, command, Time.fixedDeltaTime);
         }
 
         void IClientWorld.RemoveEntity(EntityClient entity)

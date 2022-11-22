@@ -30,28 +30,30 @@ namespace RailgunNet.Connection.Traffic
     /// </summary>
     public class RailInterpreter
     {
-        private readonly RailBitBuffer bitBuffer;
+        private readonly RailBitBuffer bitBufferSend;
+        private readonly RailBitBuffer bitBufferReceive;
         private readonly byte[] bytes;
 
         public RailInterpreter()
         {
             bytes = new byte[RailConfig.DATA_BUFFER_SIZE];
-            bitBuffer = new RailBitBuffer();
+            bitBufferSend = new RailBitBuffer();
+            bitBufferReceive = new RailBitBuffer();
         }
 
         public void SendPacket(RailResource resource, IRailNetPeer peer, RailPacketOutgoing packet)
         {
-            bitBuffer.Clear();
-            packet.Encode(resource, bitBuffer);
-            int length = bitBuffer.Store(bytes);
+            bitBufferSend.Clear();
+            packet.Encode(resource, bitBufferSend);
+            int length = bitBufferSend.Store(bytes);
             RailDebug.Assert(length <= RailConfig.PACKCAP_MESSAGE_TOTAL);
             peer.SendPayload(new ArraySegment<byte>(bytes, 0, length));
         }
 
         public RailBitBuffer LoadData(ArraySegment<byte> buffer)
         {
-            bitBuffer.Load(buffer);
-            return bitBuffer;
+            bitBufferReceive.Load(buffer);
+            return bitBufferReceive;
         }
     }
 }
