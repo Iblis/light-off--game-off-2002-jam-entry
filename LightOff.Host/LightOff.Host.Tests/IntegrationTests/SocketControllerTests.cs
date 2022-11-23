@@ -1,17 +1,15 @@
-﻿using LightOff.Host.Client;
-using LightOff.Host.Session;
+﻿// Copyright (c) 2022 Philipp Walser
+// This file is subject to the terms and conditions defined in file 'LICENSE.md',
+// which can be found in the root folder of this source code package.
+using LightOff.Host.Client;
 using LightOff.Messaging;
-using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using Microsoft.Win32;
 using Moq;
 using RailgunNet;
 using RailgunNet.Connection.Client;
 using RailgunNet.Factory;
 using RailgunNet.Logic;
-using System.ComponentModel.DataAnnotations;
 using Xunit.Abstractions;
 
 namespace LightOff.Host.Tests.IntegrationTests

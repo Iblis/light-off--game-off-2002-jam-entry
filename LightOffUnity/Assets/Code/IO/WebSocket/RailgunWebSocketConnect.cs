@@ -13,15 +13,19 @@ namespace LightOff.IO.WebSocket
     {
         public RailgunWebSocketConnect(Func<RailClient> clientFactory) 
         {
-            _peer = new WebSocketPeer();
-            _client = clientFactory();            
+            _client = clientFactory();
+            _peer = new WebSocketPeer(_client);
+                        
         }
 
         public async UniTask StartAsync(CancellationToken cancellation)
         {
-            await _peer.ConnectTo("localhost:7212", "testX", "GhostTracker");
-            _room = _client.StartRoom();
-            _client.SetPeer(_peer);
+            
+            _room = await _peer.ConnectTo("localhost:7212", "testX", "GhostTracker");
+            if(_room == null)
+            {
+                UnityEngine.Debug.LogError("Unable to start Client Room");
+            }
         }
 
         public void Tick()

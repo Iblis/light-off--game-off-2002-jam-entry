@@ -2,6 +2,7 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md',
 // which can be found in the root folder of this source code package.
 using Cysharp.Threading.Tasks;
+using RailgunNet.Connection.Client;
 using RailgunNet.Connection.Traffic;
 using System;
 using System.Buffers;
@@ -20,12 +21,17 @@ namespace LightOff.IO.WebSocket
 
         public event RailNetPeerEvent PayloadReceived;
 
-        public void SendPayload(ArraySegment<byte> buffer)
+        public WebSocketPeer(RailClient client)
         {
-            _socket.SendAsync(buffer, System.Net.WebSockets.WebSocketMessageType.Binary, true, CancellationToken.None);    
+            _client = client;
         }
 
-        public async UniTask/*UniTask<SessionState>*/ ConnectTo(string hostName, string sessionName, string playerName)
+        public void SendPayload(ArraySegment<byte> buffer)
+        {
+            _socket.SendAsync(buffer, WebSocketMessageType.Binary, true, CancellationToken.None);
+        }
+
+        public async UniTask<RailClientRoom> ConnectTo(string hostName, string sessionName, string playerName)
         {
             _completionSource = null;
             if (_cancellation != null)
@@ -47,7 +53,9 @@ namespace LightOff.IO.WebSocket
                 _timeoutController.Reset();
 
                 _completionSource = new UniTaskCompletionSource<string>();
+                _client.SetPeer(this);
                 Listen().Forget();
+                return _client.StartRoom();
             }
             catch (Exception ex) when (ex is OperationCanceledException || ex is WebSocketException)
             {
@@ -55,6 +63,7 @@ namespace LightOff.IO.WebSocket
                 //_logger.LogError($"Connection failed: {ex.Message}");
                 //return null;
             }
+            return null;
         }
 
         async UniTask Listen()
@@ -70,14 +79,16 @@ namespace LightOff.IO.WebSocket
                     isEndOfMessage = Receive(result, buffer, out var frame);
                     if (isEndOfMessage && !frame.IsEmpty)
                     {
-                        SequenceMarshal.TryGetArray(frame, out var segment);
-                        PayloadReceived.Invoke(this, segment);
-                        foreach (var chunk in frame)
+                        if(SequenceMarshal.TryGetArray(frame, out var segment))
                         {
-                            if (MemoryMarshal.TryGetArray(chunk, out var sharedSegment))
-                            {
-                                ArrayPool<byte>.Shared.Return(sharedSegment.Array);
-                            }
+                            PayloadReceived.Invoke(this, segment);
+                            // TODO: this might throw if wrong segment is set!
+                            // maybe try/catch?
+                            ArrayPool<byte>.Shared.Return(segment.Array);
+                        }
+                        else
+                        {
+                            UnityEngine.Debug.LogError("Can't marshall array data from ReadOnlySequence");
                         }
                     }
                 }
@@ -132,8 +143,10 @@ namespace LightOff.IO.WebSocket
         IWebSocket _socket;
         CancellationTokenSource _cancellation;
         UniTaskCompletionSource<string> _completionSource;
+        readonly RailClient _client;
         readonly TimeoutController _timeoutController = new TimeoutController();
+        byte[] _buffer = new byte[SIZE_HINT];
 
-        const int SIZE_HINT = 4096;
+        const int SIZE_HINT = 1024;
     }
 }
