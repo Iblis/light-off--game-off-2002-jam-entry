@@ -7,6 +7,7 @@ namespace LightOff.Host.Session
 {
     public interface IGameLoop
     {
+        bool HasRegistrations { get; }
         Task RegisterActionAsync(LogicLooperActionDelegate loopAction);
     }
 }

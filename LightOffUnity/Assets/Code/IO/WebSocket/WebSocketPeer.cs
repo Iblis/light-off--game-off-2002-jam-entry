@@ -6,6 +6,7 @@ using RailgunNet.Connection.Client;
 using RailgunNet.Connection.Traffic;
 using System;
 using System.Buffers;
+using System.Collections.Generic;
 using System.Net.WebSockets;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -21,9 +22,11 @@ namespace LightOff.IO.WebSocket
 
         public event RailNetPeerEvent PayloadReceived;
 
-        public WebSocketPeer(RailClient client)
+        public UniTask CompletionDueToDisconnect => _completionSource.Task;
+
+        public WebSocketPeer(Func<RailClient> clientFactory)
         {
-            _client = client;
+            _clientFactory = clientFactory;
         }
 
         public void SendPayload(ArraySegment<byte> buffer)
@@ -31,7 +34,7 @@ namespace LightOff.IO.WebSocket
             _socket.SendAsync(buffer, WebSocketMessageType.Binary, true, CancellationToken.None);
         }
 
-        public async UniTask<RailClientRoom> ConnectTo(string hostName, string sessionName, string playerName)
+        public async UniTask<ConnectionResult> ConnectTo(string hostName, string sessionName, string playerName)
         {
             _completionSource = null;
             if (_cancellation != null)
@@ -53,9 +56,11 @@ namespace LightOff.IO.WebSocket
                 _timeoutController.Reset();
 
                 _completionSource = new UniTaskCompletionSource<string>();
+                _client = _clientFactory();
                 _client.SetPeer(this);
                 Listen().Forget();
-                return _client.StartRoom();
+                var room = _client.StartRoom();
+                return new ConnectionResult(_client, room);
             }
             catch (Exception ex) when (ex is OperationCanceledException || ex is WebSocketException)
             {
@@ -63,38 +68,53 @@ namespace LightOff.IO.WebSocket
                 //_logger.LogError($"Connection failed: {ex.Message}");
                 //return null;
             }
-            return null;
+            return ConnectionResult.Error;
         }
 
         async UniTask Listen()
         {
-            while (!_cancellation.IsCancellationRequested)
+            while (_cancellation != null && !_cancellation.IsCancellationRequested)
             {
                 var isEndOfMessage = false;
 
-                while (!isEndOfMessage && !_cancellation.IsCancellationRequested)
+                try
                 {
-                    var buffer = ArrayPool<byte>.Shared.Rent(SIZE_HINT);
-                    var result = await _socket.ReceiveAsync(buffer, _cancellation.Token);
-                    isEndOfMessage = Receive(result, buffer, out var frame);
-                    if (isEndOfMessage && !frame.IsEmpty)
+                    while (!isEndOfMessage && _cancellation != null && !_cancellation.IsCancellationRequested)
                     {
-                        if(SequenceMarshal.TryGetArray(frame, out var segment))
+                        var buffer = ArrayPool<byte>.Shared.Rent(SIZE_HINT);
+                        var result = await _socket.ReceiveAsync(buffer, _cancellation.Token);
+                        isEndOfMessage = Receive(result, buffer, out var frame);
+                        if (isEndOfMessage && !frame.IsEmpty)
                         {
-                            PayloadReceived.Invoke(this, segment);
-                            // TODO: this might throw if wrong segment is set!
-                            // maybe try/catch?
-                            ArrayPool<byte>.Shared.Return(segment.Array);
-                        }
-                        else
-                        {
-                            UnityEngine.Debug.LogError("Can't marshall array data from ReadOnlySequence");
+                            if (SequenceMarshal.TryGetArray(frame, out var segment))
+                            {
+                                PayloadReceived.Invoke(this, segment);
+                                ArrayPool<byte>.Shared.Return(segment.Array);
+                            } 
+                            else
+                            {
+                                UnityEngine.Debug.LogError("Can't marshall array data from ReadOnlySequence");
+                            }
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    UnityEngine.Debug.LogError($"Error reading websocket stream. Disconnecting now {ex.Message}");
+                    _cancellation.Cancel();
+                    _completionSource.TrySetResult(ex.Message);
+                }
             }
             _cancellation = null;
-            await _socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Client closed", CancellationToken.None);
+            try
+            {
+                await _socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Client closed", CancellationToken.None);
+            }
+            catch (Exception ex)
+            {
+                UnityEngine.Debug.LogError($"Socket already gone {ex.Message}");
+            }
+            UnityEngine.Debug.Log("Socket Closed");
         }
 
         bool Receive(WebSocketReceiveResult result, ArraySegment<byte> buffer, out ReadOnlySequence<byte> frame)
@@ -138,12 +158,22 @@ namespace LightOff.IO.WebSocket
             }
         }
 
+        internal void Disconnect()
+        {
+            if(_cancellation != null)
+            {
+                _cancellation.Cancel();
+            }
+            _cancellation = null;
+        }
+
         Chunk<byte> startChunk = null;
         Chunk<byte> currentChunk = null;
         IWebSocket _socket;
         CancellationTokenSource _cancellation;
         UniTaskCompletionSource<string> _completionSource;
-        readonly RailClient _client;
+        RailClient _client;
+        readonly Func<RailClient> _clientFactory;
         readonly TimeoutController _timeoutController = new TimeoutController();
         byte[] _buffer = new byte[SIZE_HINT];
 

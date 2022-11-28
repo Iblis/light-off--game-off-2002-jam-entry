@@ -12,5 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cc8af91580f03e4eba1132e97f39990, type: 3}
   m_Name: Prefab Settings
   m_EditorClassIdentifier: 
-  PlayerPrefab: {fileID: 7168237590683739912, guid: c3e16d103d020c347b799fac68c965d0, type: 3}
+  TrackerPrefab: {fileID: 7168237590683739912, guid: c3e16d103d020c347b799fac68c965d0, type: 3}
+  GhostPrefab: {fileID: 7801394601802116189, guid: 21a6049039278134d8bd35e0c0829501, type: 3}
   ObstaclePrefab: {fileID: 3498407451405693170, guid: 23dda13ec0b97af4682f46cba0d2ee85, type: 3}
+  ConnectionViewPrefab: {fileID: 7366132308559134717, guid: b9c56d9887f449541be021b407f39034, type: 3}
+  ReadyViewPrefab: {fileID: -4810094166152291829, guid: b25c4c4141e1189439aa44a7219439bb, type: 3}
+  ColorSlots:
+  - {r: 0.09981801, g: 0.21787713, b: 0.9245283, a: 1}
+  - {r: 0.9254902, g: 0.10605832, b: 0.09803919, a: 1}
+  - {r: 0.19396375, g: 0.745283, b: 0.045310687, a: 1}
+  - {r: 1, g: 0.7035125, b: 0, a: 1}

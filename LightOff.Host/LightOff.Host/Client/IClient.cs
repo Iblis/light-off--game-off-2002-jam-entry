@@ -8,5 +8,9 @@ namespace LightOff.Host.Client
     public interface IClient : IRailNetPeer
     {
         string PlayerName { get; init; }
+
+        event Action<IClient> ClientRemoved;
+
+        void Disconnect();
     }
 }

@@ -19,7 +19,8 @@ In order of when they were added to the project
 * [Tjstretchalot/SharpMath2](https://github.com/Tjstretchalot/SharpMath2), adapted for being used as an UPM package
 * [benjitrosch/spatial-hash](https://github.com/benjitrosch/spatial-hash) with small modifications (generic SpatialHash, find neighbours of Cell )
 * [Iblis/UniTaskWebSocket](https://github.com/Iblis/UniTaskWebSocket) my own helper library to use WebSockets with async/await pattern
-* [Cysharp/UniTask](https://github.com/Cysharp/UniTask)
+* [Cysharp/UniTask](https://github.com/Cysharp/UniTask) using my adaption to add support for UiToolkit (https://github.com/Cysharp/UniTask/pull/338)
+* [Cysharp/MessagePipe](https://github.com/Cysharp/MessagePipe)
 
 ### Server (Asp.Net 6)
 * [Cysharp/LogicLooper/](https://github.com/Cysharp/LogicLooper)

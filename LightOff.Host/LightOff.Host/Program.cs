@@ -5,6 +5,7 @@ using LightOff.Host;
 using LightOff.Host.Session;
 using LightOff.Messaging;
 using LightOff.Messaging.Server;
+using MessagePipe;
 using RailgunNet.Factory;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,14 +16,23 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<IHostedGameSessions, HostedGameSessions>();
 builder.Services.AddSingleton<IGameLoop, LoopHostedService>();
 builder.Services.AddHostedService( (sp) => sp.GetService<IGameLoop>() as LoopHostedService);
+builder.Services.AddMessagePipe();
+
+
 
 RailRegistry registry = new RailRegistry(RailgunNet.Component.Server);
 registry.AddEntityType<EntityServer, EntityState>();
 registry.SetCommandType<MoveCommand>();
+
 builder.Services.AddSingleton(registry);
 
+
 var app = builder.Build();
-// Configure the HTTP request pipeline.
+
+GlobalMessagePipe.SetProvider(app.Services);
+registry.AddEventType<EventMessage>(new[] { GlobalMessagePipe.GetPublisher<EventMessage>() });
+
+
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();

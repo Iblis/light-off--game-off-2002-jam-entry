@@ -37,7 +37,7 @@ namespace LightOff.Host.Controllers
                 var client = new ClientPeer(socket, playerName, _logger);
                 session.Join(client);
                 _logger.LogInformation("Listening to client {clientId} in Session {sessionName}", client.ConnectionId, sessionName);
-                await client.StartListening();
+                await client.StartListeningAsync();
                 return new EmptyResult();
             }
             else

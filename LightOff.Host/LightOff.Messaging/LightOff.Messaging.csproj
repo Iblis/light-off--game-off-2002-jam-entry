@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MessagePipe" Version="1.7.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LightOff.Logic\LightOff.Logic.csproj" />
     <ProjectReference Include="..\RailgunNet\RailgunNet.csproj" />
   </ItemGroup>

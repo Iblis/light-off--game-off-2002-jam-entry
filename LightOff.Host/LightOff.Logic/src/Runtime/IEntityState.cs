@@ -8,12 +8,15 @@ namespace LightOff.Logic
     public interface IEntityState
     {
         Vector2 Position { get; set; }
-        int HitCooldown { get; set; }
+        uint HitCooldown { get; set; }
         bool ExecutesAction { get; set; }
         float Angle { get; set; }
         bool IsHit { get; }
 
-        bool IsVisible { get; }
+        uint Visibility { get; set; }
+        bool IsReady { get; set; }
+        int PlayerSlot { get; set; }
+        uint Health { get; set; }
 
         void ApplyHit();
     }

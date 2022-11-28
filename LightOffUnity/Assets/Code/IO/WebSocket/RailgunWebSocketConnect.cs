@@ -2,39 +2,63 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md',
 // which can be found in the root folder of this source code package.
 using Cysharp.Threading.Tasks;
+using LightOff.ClientLogic;
+using LightOff.Messaging;
 using RailgunNet.Connection.Client;
 using System;
-using System.Threading;
-using VContainer.Unity;
+using System.Linq;
 
 namespace LightOff.IO.WebSocket
 {
-    public class RailgunWebSocketConnect : IAsyncStartable, ITickable
+    public class RailgunWebSocketConnect : ISessionConnection
     {
         public RailgunWebSocketConnect(Func<RailClient> clientFactory) 
         {
-            _client = clientFactory();
-            _peer = new WebSocketPeer(_client);
-                        
+            _peer = new WebSocketPeer(clientFactory);                     
         }
 
-        public async UniTask StartAsync(CancellationToken cancellation)
+        public async UniTask<bool> ConnectTo(string sessionName, string playerName)
         {
-            
-            _room = await _peer.ConnectTo("localhost:7212", "testX", "GhostTracker");
-            if(_room == null)
+            var connectionResult = await _peer.ConnectTo("localhost:7212", sessionName, playerName);
+            if(connectionResult.Success)
             {
-                UnityEngine.Debug.LogError("Unable to start Client Room");
+                _client = connectionResult.Client;
+                _room = connectionResult.Room;
+            }
+            return connectionResult.Success;
+        }
+
+        public void Disconnect()
+        {
+            _peer.Disconnect();
+            _client.ServerPeer.Shutdown();
+            _client.SetPeer(null);
+            _client = null;
+            _room = null;
+        }
+
+        public void SetReadyState(bool value)
+        {
+            var sourceEntity = _room.LocalEntities.First();
+            _room.RaiseEvent<EventMessage>(evt =>
+            {
+                evt.EventMessageType = EventMessageType.PlayerReady;
+                evt.SourceId = sourceEntity.Id;
+            });
+        }
+
+        public void Update()
+        {
+            if(_client != null)
+            {
+                _client.Update();
             }
         }
 
-        public void Tick()
-        {
-            _client.Update();
-        }
-
         RailClientRoom _room;
+        RailClient _client;
         readonly WebSocketPeer _peer;
-        readonly RailClient _client;
+
+        public UniTask CompletionDueToDisconnect => _peer.CompletionDueToDisconnect;
     }
 }

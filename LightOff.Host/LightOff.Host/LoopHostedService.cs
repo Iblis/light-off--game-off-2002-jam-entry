@@ -17,6 +17,8 @@ namespace LightOff.Host
             return Task.CompletedTask;
         }
 
+        bool IGameLoop.HasRegistrations => _looper?.ApproximatelyRunningActions > 0;
+
         public Task StartAsync(CancellationToken cancellationToken)
         {
             const int targetFps = 60;

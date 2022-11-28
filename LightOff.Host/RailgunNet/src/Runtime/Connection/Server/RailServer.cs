@@ -87,7 +87,7 @@ namespace RailgunNet.Connection.Server
         {
             if (clients.ContainsKey(netPeer) == false)
             {
-                RailServerPeer client = new RailServerPeer(Resource, netPeer, Interpreter)
+                RailServerPeer client = new RailServerPeer(Resource, netPeer, new RailInterpreter())
                 {
                     Identifier = identifier
                 };

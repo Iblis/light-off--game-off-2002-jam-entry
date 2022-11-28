@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2022 Philipp Walser
 // This file is subject to the terms and conditions defined in file 'LICENSE.md',
 // which can be found in the root folder of this source code package.
-using LightOff.Host.Session;
 using Nerdbank.Streams;
 using RailgunNet.Connection.Traffic;
 using System.Buffers;
@@ -17,6 +16,8 @@ namespace LightOff.Host.Client
 
         public event RailNetPeerEvent PayloadReceived;
 
+        public event Action<IClient> ClientRemoved;
+
         public ClientPeer(WebSocket socket, string playerName, ILogger logger)
         {
             _socket = socket;
@@ -29,36 +30,34 @@ namespace LightOff.Host.Client
 
         public float? Ping => 0;
         
+        public void Disconnect()
+        {
+            _cancellation.Cancel();
+        }
 
         public void SendPayload(ArraySegment<byte> buffer)
         {
             _ = _socket.SendAsync(buffer, WebSocketMessageType.Binary, true, CancellationToken.None);
         }
 
-        public Task StartListening()
+        public Task StartListeningAsync()
         {
-            return Task.Run(Listen /*, this.DisconnectedToken*/);
+            return Task.Run(ListenAsync /*, this.DisconnectedToken*/);
         }
 
-        private async Task Listen()
+        async Task ListenAsync()
         {
-            while(_socket.State != WebSocketState.Closed)
+            _cancellation = new CancellationTokenSource();
+            while(_socket.State != WebSocketState.Closed && !_cancellation.IsCancellationRequested)
             {
                 try
                 {
-                    await ReadAsync(CancellationToken.None);
-                }
-                catch (OperationCanceledException)
-                {
-                    break;
-                }
-                catch (ObjectDisposedException)
-                {
-                    break;
+                    await ReadAsync(_cancellation.Token);
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error reading client stream");
+                    _logger.LogError(ex, "Error reading client stream, disconnect peer now");
+                    ClientRemoved?.Invoke(this);
                     return;
                 }
             }
@@ -101,9 +100,9 @@ namespace LightOff.Host.Client
         }
 
         readonly WebSocket _socket;
-        readonly IHostedGameSession _session;
         readonly ILogger _logger;
         readonly Sequence<byte> _contentSequenceBuilder = new Sequence<byte>();
+        CancellationTokenSource _cancellation;
         const int SIZE_HINT = 4096;
     }
 }

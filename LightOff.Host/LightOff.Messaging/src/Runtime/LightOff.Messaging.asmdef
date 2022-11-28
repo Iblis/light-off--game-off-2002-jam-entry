@@ -3,7 +3,8 @@
     "rootNamespace": "LightOff.Messaging",
     "references": [
         "GUID:645c8bb4a88fd644da8c35b890b39be6",
-        "GUID:07f6107e84f499946a6e1921013e035a"
+        "GUID:07f6107e84f499946a6e1921013e035a",
+        "GUID:08b38f39e2d9e594389b7a4cf4c2c338"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

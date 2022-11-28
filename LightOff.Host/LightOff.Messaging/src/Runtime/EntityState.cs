@@ -9,12 +9,13 @@ using System.Numerics;
 namespace LightOff.Messaging
 {
     public class EntityState : RailState, IRailPoolable<RailState>, IEntityState
-    {        
-        // TODO: TypeId is probably Immutable?
-        [Mutable] public int EntityTypeId { get; set; }
-        [Mutable] public int HitCooldown { get; set; }
+    {
+        [Mutable] public int PlayerSlot { get; set; }
+        [Mutable] public uint Health { get; set; }
+        [Mutable] public uint HitCooldown { get; set; }
         [Mutable] public bool ExecutesAction { get; set; }
-        [Mutable] public bool IsVisible { get; set; }
+        [Mutable] public uint Visibility { get; set; }
+        [Mutable] public bool IsReady { get; set; }
         [Mutable][Compressor(typeof(CoordinateCompressor))] public float PosX { get => _position.X; set => _position.X = value; }
         [Mutable][Compressor(typeof(CoordinateCompressor))] public float PosY { get => _position.Y; set => _position.Y = value; }
         [Mutable][Compressor(typeof(CoordinateCompressor))] public float Angle { get; set; }
@@ -24,6 +25,7 @@ namespace LightOff.Messaging
         public void ApplyHit()
         {
             HitCooldown = 10;
+            Health = 0;
         }
 
         public bool IsHit => HitCooldown > 0;

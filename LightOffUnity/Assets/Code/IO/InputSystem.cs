@@ -18,17 +18,19 @@ namespace LightOff.IO
 
         public void Tick()
         {
-            if(_locallyControlledEntity == null)
+            if(_locallyControlledEntity == null
+                || _locallyControlledEntity.State.Health == 0)
             {
                 return;
             }
+
             var keyDown = Input.GetKey(KeyCode.DownArrow) ? 1 : 0;
             var keyUp = Input.GetKey(KeyCode.UpArrow) ? 1 : 0;
             var keyLeft = Input.GetKey(KeyCode.LeftArrow) ? 1 : 0;
             var keyRight = Input.GetKey(KeyCode.RightArrow) ? 1 : 0;
             var input = new System.Numerics.Vector2(keyRight - keyLeft, keyUp - keyDown);
             
-            if(_currentInput.Update(input))
+            if(_currentInput.Update(input) && _locallyControlledEntity.State.Health > 0)
             {
                 _inputQueue.Enqueue(_currentInput);
             }
@@ -84,6 +86,11 @@ namespace LightOff.IO
             if(_inputQueue.Count == 0)
             {
                 Debug.LogError("IInputSystem.WriteCommand was called but there is no input data to create a command from");
+                return false;
+            }
+            if(entity.State.Health == 0)
+            {
+                // entities with no health can't control the entity
                 return false;
             }
             return true;

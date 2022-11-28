@@ -48,7 +48,7 @@ namespace LightOff.Host.Tests.IntegrationTests
             var logger = new Mock<ILogger>();
             var peer = new ClientPeer(webSocket, string.Empty, logger.Object);
             railClient.SetPeer(peer);
-            _ = peer.StartListening();
+            _ = peer.StartListeningAsync();
             // No entities in room in the beginning
             Assert.Empty(room.Entities);
             // let server startup / send updates

@@ -46,7 +46,7 @@ namespace LightOff.Level.Grid
             return a.X != b.X || a.Y != b.Y;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (!(obj is CellIndex))
             {

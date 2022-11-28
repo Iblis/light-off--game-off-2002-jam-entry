@@ -18,8 +18,18 @@ namespace LightOff.Messaging.Server
 
         internal void ApplyCommand(EntityServer entity, MoveCommand command)
         {
+            if(entity.State.Health == 0)
+            {
+                return;
+            }
             command.EnsureCorrectPrecision();
             base.ApplyCommand(entity.State, command, _deltaTime);
+            _world.ApplyHitsBetweenTrackersAndGhost();
+        }
+
+        internal void ApplyRemoveCommand(EntityServer entity)
+        {
+            _world.RemovePlayer(entity);
         }
 
         float _deltaTime;

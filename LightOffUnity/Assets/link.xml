@@ -1,0 +1,8 @@
+<linker>
+  <assembly fullname="LightOff.Presentation" preserve="all"/>
+  <assembly fullname="LightOff.IO" preserve="all"/>
+  <assembly fullname="LightOff.Logic" preserve="all"/>
+  <assembly fullname="LightOff.Level" preserve="all"/>
+  <assembly fullname="LightOff.Messaging" preserve="all"/>
+  <assembly fullname="RailgunNet" preserve="all"/>
+</linker>

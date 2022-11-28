@@ -10,11 +10,16 @@ namespace LightOff.Messaging.Server
     {
         IEntityState IEntity.State => State;
 
-        public CommandHandler CommandHandler { get; set; }
+        public CommandHandler? CommandHandler { get; set; }
         
         protected override void ApplyCommand(MoveCommand toApply)
         {
-            CommandHandler.ApplyCommand(this, toApply);       
+            CommandHandler?.ApplyCommand(this, toApply);     
+        }
+
+        protected override void OnRemoved()
+        {
+            CommandHandler?.ApplyRemoveCommand(this);
         }
     }
 }

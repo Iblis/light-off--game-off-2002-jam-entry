@@ -10,9 +10,15 @@ namespace LightOff.Logic
     {
         IEnumerable<IObstacle> Obstacles { get; }
 
-        void AddTracker(IEntity tracker);
+        IEnumerable<IEntity> Players { get; }
+        bool IsPreparedForMatch { get; }
+
+        void AddPlayer(IEntity tracker);
         void ApplyHitsBetweenTrackersAndGhost();
+        void Clear();
+        WinState DetermineWinState();
         Vector2 GetValidMovementVectorFor(IEntityState entityState, Vector2 movement);
+        void RemovePlayer(IEntity player);
         void SetGhost(IEntity ghost);
     }
 }

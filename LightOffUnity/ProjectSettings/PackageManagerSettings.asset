@@ -30,6 +30,8 @@ MonoBehaviour:
     m_Name: package.openupm.com
     m_Url: https://package.openupm.com
     m_Scopes:
+    - com.cysharp.messagepipe
+    - com.cysharp.messagepipe.vcontainer
     - com.cysharp.unitask
     - com.openupm
     - com.pwalser.unitaskwebsocket

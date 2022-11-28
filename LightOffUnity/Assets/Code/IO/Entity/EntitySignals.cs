@@ -20,12 +20,16 @@ namespace LightOff.IO.Entity
 
         public void OnRemoveEntity(EntityClient entity)
         {
-            _world.RemoveEntity(entity);
+            _world.RemoveEntity(entity.Id);
         }
 
         public void OnLocallyControlled(EntityClient entity) 
         {
-            _inputSystem.SetLocallyControlledEntity(entity);
+            if (entity.IsControlled)
+            {
+                _inputSystem.SetLocallyControlledEntity(entity);
+                _world.SetLocallControlledEntity(entity);
+            }
         }
 
         public void OnApplyCommand(EntityClient entity, MoveCommand command) 

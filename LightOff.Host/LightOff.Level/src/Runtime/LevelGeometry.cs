@@ -30,6 +30,25 @@ namespace LightOff.Level
             // Walls in Level
             spatialHash.Insert(new HashableShape(_smallHorizontal, new Vector2(7.25f, 16)));
             spatialHash.Insert(new HashableShape(_smallVertical, new Vector2(4, 14.25f)));
+
+            spatialHash.Insert(new HashableShape(_smallVertical, new Vector2(20, 17)));
+            spatialHash.Insert(new HashableShape(_smallVertical, new Vector2(20, 12)));
+
+            spatialHash.Insert(new HashableShape(_smallHorizontal, new Vector2(26f, 15)));
+            spatialHash.Insert(new HashableShape(_smallHorizontal, new Vector2(30f, 15)));
+
+            spatialHash.Insert(new HashableShape(_smallVertical, new Vector2(24.25f, 11.75f)));
+            spatialHash.Insert(new HashableShape(_smallVertical, new Vector2(31.75f, 11.75f)));
+
+            spatialHash.Insert(new HashableShape(_smallHorizontal, new Vector2(19.5f, 4)));
+            spatialHash.Insert(new HashableShape(_smallVertical, new Vector2(16.25f, 5.75f)));
+
+            spatialHash.Insert(new HashableShape(_smallHorizontal, new Vector2(7.25f, 8.5f)));
+            spatialHash.Insert(new HashableShape(_smallVertical, new Vector2(9, 5.25f)));
+
+            spatialHash.Insert(new HashableShape(_smallVertical, new Vector2(28, 5.5f)));
+
+            spatialHash.Insert(new HashableShape(_smallHorizontal, new Vector2(16.75f, 13)));
         }
  
         public static void Insert(this SpatialHash<HashableShape> spatialHash, HashableShape shape)

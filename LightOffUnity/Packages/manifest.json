@@ -49,13 +49,17 @@
     "com.unity.modules.xr": "1.0.0",
     "jp.hadashikick.vcontainer": "1.11.1",
     "com.pwalser.unitaskwebsocket": "0.3.1",
-    "com.cysharp.unitask": "2.3.3"
+    "com.cysharp.unitask": "2.3.3",
+    "com.cysharp.messagepipe": "1.7.4",
+    "com.cysharp.messagepipe.vcontainer": "1.7.4"
   },
   "scopedRegistries": [
     {
       "name": "package.openupm.com",
       "url": "https://package.openupm.com",
       "scopes": [
+        "com.cysharp.messagepipe",
+        "com.cysharp.messagepipe.vcontainer",
         "com.cysharp.unitask",
         "com.openupm",
         "com.pwalser.unitaskwebsocket",
