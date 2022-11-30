@@ -93,6 +93,7 @@ namespace LightOff.IO
             if(entity.State.Health == 0)
             {
                 // entities with no health can't control the entity
+                Debug.Log("Entities with no health can't control the entity");
                 return false;
             }
             return true;

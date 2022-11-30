@@ -5,7 +5,7 @@ namespace LightOff.Presentation
 {
     public abstract class PlayerBase : MonoBehaviour
     {
-        void Awake()
+        protected virtual void Awake()
         {
             _renderer = GetComponent<SpriteRenderer>();
         }

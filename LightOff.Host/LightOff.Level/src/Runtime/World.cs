@@ -89,7 +89,7 @@ namespace LightOff.Level
                 // early out if lightcone is off or ghost is too far away
                 if (!trackerState.ExecuteAction || Vector2.Distance(trackerPos, ghostPos) > 3)
                 {
-                    break;
+                    continue;
                 }
 
                 // check lightcone

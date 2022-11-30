@@ -10,8 +10,9 @@ namespace LightOff.Presentation
     public class Tracker : PlayerBase
     {
         // Start is called before the first frame update
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _flashLight = GetComponentInChildren<Light2D>();
             _flashLight.enabled = false;
         }

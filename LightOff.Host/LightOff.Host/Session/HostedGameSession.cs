@@ -131,7 +131,7 @@ namespace LightOff.Host.Session
                 }
             }
             // If all players have left the session, it can be closed!
-            if(_playersHaveJoined && _room.Entities.Count == 0)
+            if(_playersHaveJoined && _clients.Count == 0)
             {
                 return false;
             }
