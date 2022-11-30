@@ -19,7 +19,12 @@ namespace LightOff.IO.WebSocket
 
         public async UniTask<bool> ConnectTo(string sessionName, string playerName)
         {
-            var connectionResult = await _peer.ConnectTo("localhost:7212", sessionName, playerName);
+#if UNITY_WEBGL && !UNITY_EDITOR
+            var hostName = "lightoff.mudmatch.de";
+#else
+            var hostName = "localhost:7212";
+#endif
+            var connectionResult = await _peer.ConnectTo(hostName, sessionName, playerName);
             if(connectionResult.Success)
             {
                 _client = connectionResult.Client;
@@ -31,10 +36,13 @@ namespace LightOff.IO.WebSocket
         public void Disconnect()
         {
             _peer.Disconnect();
-            _client.ServerPeer.Shutdown();
-            _client.SetPeer(null);
-            _client = null;
-            _room = null;
+            if (_client != null)
+            {
+                _client.ServerPeer.Shutdown();
+                _client.SetPeer(null);
+                _client = null;
+                _room = null;
+            }
         }
 
         public void SetReadyState(bool value)

@@ -2,8 +2,8 @@
     <Style src="project://database/Assets/GUI/popup.uss?fileID=7433441132597879392&amp;guid=6280a4c0ebc401a408e0e330d9468e32&amp;type=3#popup" />
     <ui:VisualElement name="VisualElement" class="centeredPopup lightOffPopup">
         <ui:Label tabindex="-1" text="Join a Match" display-tooltip-when-elided="true" style="-unity-text-align: upper-center; font-size: 20px;" />
-        <ui:TextField picking-mode="Ignore" label="Match Name" value="filler text" text="filler text" name="matchName" />
-        <ui:TextField picking-mode="Ignore" label="Player Name" value="filler text" text="filler text" name="playerName" />
-        <ui:Button text="Join" display-tooltip-when-elided="true" name="connectionButton" />
+        <ui:TextField picking-mode="Ignore" label="Match Name" name="matchName" class="lightOff-labeledField" />
+        <ui:TextField picking-mode="Ignore" label="Player Name" name="playerName" class="lightOff-labeledField" />
+        <ui:Button text="Join" display-tooltip-when-elided="true" name="connectionButton" style="margin-top: 10px;" />
     </ui:VisualElement>
 </ui:UXML>

@@ -7,6 +7,7 @@ namespace LightOff.Logic
     {
         float DirectionX { get; }
         float DirectionY { get; }
+        bool ExecuteAction { get; set; }
 
         void EnsureCorrectPrecision();
     }

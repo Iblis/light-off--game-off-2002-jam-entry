@@ -12,6 +12,8 @@ namespace LightOff.Messaging
         [CommandData][Compressor(typeof(CoordinateCompressor))] public float DirectionX { get; set; }
         [CommandData][Compressor(typeof(CoordinateCompressor))] public float DirectionY { get; set; }
 
+        [CommandData] public bool ExecuteAction { get; set; }
+
         public void EnsureCorrectPrecision()
         {
             if(DirectionX.IsApproximatelyZero())

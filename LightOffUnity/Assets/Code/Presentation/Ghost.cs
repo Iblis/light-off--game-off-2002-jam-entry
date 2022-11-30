@@ -22,10 +22,12 @@ namespace LightOff.Presentation
                 _renderer.color = color;
                 if (state.Visibility < 25 && gameObject.activeSelf)
                 {
+                    UnityEngine.Debug.Log($"hiding ghost now {state.Visibility}");
                     gameObject.SetActive(false);
                 }
-                else if (!gameObject.activeSelf)
+                else if (state.Visibility > 25 && !gameObject.activeSelf)
                 {
+                    UnityEngine.Debug.Log($"showing ghost again  {state.Visibility}");
                     gameObject.SetActive(true);
                 }
             }

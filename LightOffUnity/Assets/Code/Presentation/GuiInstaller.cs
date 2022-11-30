@@ -19,6 +19,7 @@ namespace LightOff.Presentation
         {
             RegisterView(_settings.ConnectionViewPrefab, builder);
             RegisterView(_settings.ReadyViewPrefab, builder);
+            RegisterView(_settings.MatchEndedPrefab, builder);
             builder.RegisterEntryPoint<PreMatchPresenter>(Lifetime.Singleton);
         }
 

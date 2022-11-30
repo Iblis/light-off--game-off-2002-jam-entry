@@ -28,9 +28,10 @@ namespace LightOff.IO
             var keyUp = Input.GetKey(KeyCode.UpArrow) ? 1 : 0;
             var keyLeft = Input.GetKey(KeyCode.LeftArrow) ? 1 : 0;
             var keyRight = Input.GetKey(KeyCode.RightArrow) ? 1 : 0;
+            var space = Input.GetKey(KeyCode.Space);
             var input = new System.Numerics.Vector2(keyRight - keyLeft, keyUp - keyDown);
             
-            if(_currentInput.Update(input) && _locallyControlledEntity.State.Health > 0)
+            if(_currentInput.Update(input, space) && _locallyControlledEntity.State.Health > 0)
             {
                 _inputQueue.Enqueue(_currentInput);
             }
@@ -64,6 +65,7 @@ namespace LightOff.IO
             var input = _inputQueue.Dequeue();
             command.DirectionX = input.DirectionX;
             command.DirectionY = input.DirectionY;
+            command.ExecuteAction = input.ExecuteAction;
         }
 
         private bool CanWriteCommandFor(EntityClient entity)

@@ -26,6 +26,7 @@ namespace LightOff.Logic
                 // Probably not so this should still be correct!
                 entityState.Angle = MathF.Atan2(command.DirectionX, command.DirectionY);
             }
+            entityState.ExecuteAction = command.ExecuteAction;
         }
 
         protected readonly IWorld _world;

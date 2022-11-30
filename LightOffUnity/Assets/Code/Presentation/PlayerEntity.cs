@@ -51,19 +51,13 @@ namespace LightOff.Presentation
             {
                 var state = _entity.State;
                 _player.UpdateFrom(state);
-                // for now, always remove ghost from being active
-                // or is this not enough, maybe need to set visible?
-                if(state.PlayerSlot == 5 && !_entity.IsControlled && _player.gameObject.activeSelf)
-                {
-                    _player.gameObject.SetActive(false);
-                }
             }
         }
 
         internal void RemoveFrom(IWorld world)
         {
             world.RemovePlayer(_entity);
-            GameObject.Destroy(_player);
+            GameObject.Destroy(_player.gameObject);
         }
 
         readonly EntityClient _entity;

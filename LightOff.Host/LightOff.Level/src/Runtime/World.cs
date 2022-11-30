@@ -81,19 +81,19 @@ namespace LightOff.Level
                 var trackerPos = new Vector2(trackerState.Position.X - 0.5f, trackerState.Position.Y - 0.5f);
                 
                 if(!trackerState.IsHit
-                    && Circle2.Intersects(_playerRect, _playerRect, trackerPos, ghostPos, false))
+                    && Circle2.Intersects(_playerCircle, _playerCircle, trackerPos, ghostPos, false))
                 {
                     trackerState.ApplyHit();
                 }
 
                 // early out if lightcone is off or ghost is too far away
-                if (!trackerState.ExecutesAction || Vector2.Distance(trackerPos, ghostPos) > 3)
+                if (!trackerState.ExecuteAction || Vector2.Distance(trackerPos, ghostPos) > 3)
                 {
                     break;
                 }
 
                 // check lightcone
-                if (Shape2.Intersects(_flashlightCone, _playerRect, trackerState.Position, ghostPos, new Rotation2(trackerState.Angle * -1), false))
+                if (Shape2.Intersects(_flashlightCone, _playerCircle, trackerState.Position, ghostPos, new Rotation2(trackerState.Angle * -1), false))
                 {
                     // make sure there is no obtacle bewteen lightcone and ghost
                     var line = new Line2(trackerState.Position, ghostState.Position);
@@ -131,7 +131,7 @@ namespace LightOff.Level
 
             foreach (var collider in colliders)
             {
-                var mtv = Rect2.IntersectMTV(_playerRect, collider.Rect, futureEntityPosition, collider.Position);
+                var mtv = Rect2.IntersectMTV(_playerCircle, collider.Rect, futureEntityPosition, collider.Position);
                 if(mtv != null)
                 {
                     return mtv.Item1 * mtv.Item2;
@@ -149,7 +149,7 @@ namespace LightOff.Level
 
         readonly SpatialHash<HashableShape> _spatialHash;
         readonly List<IEntity> _players = new();
-        readonly static Circle2 _playerRect = new Circle2(0.5f);
+        readonly static Circle2 _playerCircle = new Circle2(0.5f);
         readonly static Polygon2 _flashlightCone = new Polygon2(new[] { new Vector2(0, 0), new Vector2(-1, 2.5f), new Vector2(0, 3), new Vector2(1, 2.5f) }, Vector2.Zero);
         
         List<IEntity>? _trackers;

@@ -13,7 +13,7 @@ namespace LightOff.Messaging
         [Mutable] public int PlayerSlot { get; set; }
         [Mutable] public uint Health { get; set; }
         [Mutable] public uint HitCooldown { get; set; }
-        [Mutable] public bool ExecutesAction { get; set; }
+        [Mutable] public bool ExecuteAction { get; set; }
         [Mutable] public uint Visibility { get; set; }
         [Mutable] public bool IsReady { get; set; }
         [Mutable][Compressor(typeof(CoordinateCompressor))] public float PosX { get => _position.X; set => _position.X = value; }

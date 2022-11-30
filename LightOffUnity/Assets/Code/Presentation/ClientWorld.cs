@@ -52,7 +52,7 @@ namespace LightOff.Presentation
                 // marker to inform update-loop to spawn entites in next run
                 _spawnPlayer = true;
             }
-            else if(sessionState == SessionConnectionState.AfterMatch)
+            else if(sessionState == SessionConnectionState.Disconnected)
             {
                 foreach (var player in _players.Values)
                 {
@@ -65,17 +65,17 @@ namespace LightOff.Presentation
         public void Tick()
         {
             _session.Update();
-            
+
             foreach (var player in _players.Values)
             {
-                if(_spawnPlayer)
+                if (_spawnPlayer)
                 {
                     UnityEngine.Debug.Log("Spawning players");
                     player.SpawnIn(_world);
                 }
                 player.Update();
             }
-            if(_spawnPlayer)
+            if (_spawnPlayer)
             {
                 _spawnPlayer = false;
             }
@@ -83,10 +83,12 @@ namespace LightOff.Presentation
 
         void IClientWorld.AddEntity(EntityClient entity)
         {
+            // TODO: when adding the entity, entity is not controlled yet.
+            // this check won't do anything so it can be removed
             if(entity.IsControlled)
             {
                 _localPlayer.Value = entity;
-                UnityEngine.Debug.Log("local entity set in ClientWorld");
+                UnityEngine.Debug.Log("added entity is local entity in ClientWorld");
             }
             var newPlayer = _playerFactory(entity);
             _players.Add(entity.Id, newPlayer);
@@ -137,6 +139,7 @@ namespace LightOff.Presentation
         public void SetLocallControlledEntity(EntityClient entity)
         {
             _localPlayer.Value = entity;
+            UnityEngine.Debug.Log("ClientWorld:SetLocallControlledEntity");
         }
 
         bool _spawnPlayer;
@@ -145,6 +148,5 @@ namespace LightOff.Presentation
         readonly IGameSession _session;
         readonly Dictionary<EntityId, PlayerEntity> _players = new ();
         readonly AsyncReactiveProperty<EntityClient> _localPlayer = new AsyncReactiveProperty<EntityClient>(null);
-
     }
 }

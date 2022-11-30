@@ -5,7 +5,7 @@ namespace LightOff.Host.Session
 {
     internal enum SessionState : UInt16
     {
-        MatchInit,
+        MatchInit = 0,
         MatchStarted,
         MatchEnded,
     }

@@ -101,7 +101,10 @@ namespace LightOff.IO.WebSocket
                 catch (Exception ex)
                 {
                     UnityEngine.Debug.LogError($"Error reading websocket stream. Disconnecting now {ex.Message}");
-                    _cancellation.Cancel();
+                    if (_cancellation != null)
+                    {
+                        _cancellation.Cancel();
+                    }
                     _completionSource.TrySetResult(ex.Message);
                 }
             }

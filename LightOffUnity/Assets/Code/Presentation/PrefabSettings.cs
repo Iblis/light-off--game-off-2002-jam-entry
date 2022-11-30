@@ -20,6 +20,8 @@ namespace LightOff.Presentation
 
         public ReadyView ReadyViewPrefab;
 
+        public MatchEndedView MatchEndedPrefab;
+
         public List<Color> ColorSlots;
     }
 }

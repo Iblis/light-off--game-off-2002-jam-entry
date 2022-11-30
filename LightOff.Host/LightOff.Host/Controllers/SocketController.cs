@@ -22,7 +22,7 @@ namespace LightOff.Host.Controllers
             // TODO: security checks
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
-                if (sessionName.Length > 12)
+                if (sessionName.Length > 12 || playerName.Length > 12)
                 {
                     return new BadRequestObjectResult("Session Name must be max 12 character long");
                 }

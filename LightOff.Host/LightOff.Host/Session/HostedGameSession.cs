@@ -2,7 +2,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md',
 // which can be found in the root folder of this source code package.
 using LightOff.Host.Client;
-using LightOff.Level;
 using LightOff.Logic;
 using LightOff.Messaging;
 using MessagePipe;
@@ -14,7 +13,7 @@ namespace LightOff.Host.Session
     internal class HostedGameSession : IHostedGameSession
     {
         public string Name { get; init; }
-        public bool CanBeJoined => _world.Players.Count() < PLAYER_SLOT_GHOST;
+        public bool CanBeJoined => _world.Players.Count() < PLAYER_SLOT_GHOST && _sessionState == SessionState.MatchInit;
 
         public HostedGameSession(string sessionName,
                                     RailServer server,
@@ -22,7 +21,7 @@ namespace LightOff.Host.Session
                                     ISubscriber<EventMessage> eventMessageSubscriber,
                                     ILogger logger)
         {
-            Name = sessionName;
+            Name = sessionName.ToLower();
             _logger = logger;
             _world = world;
             _commandHandler = new Messaging.Server.CommandHandler(_world);
@@ -68,8 +67,6 @@ namespace LightOff.Host.Session
             Messaging.Server.EntityServer entityServerSide = _room.AddNewEntity<Messaging.Server.EntityServer>();
             entityServerSide.AssignController(client);
             entityServerSide.CommandHandler = _commandHandler;
-            //entityServerSide.State.Position = new System.Numerics.Vector2(10, 10);
-            entityServerSide.State.ExecutesAction = true;
             entityServerSide.State.Health = 100;
             entityServerSide.State.Visibility = 100;
             client.Scope.Evaluator = new GhostScopeEvaluator();
@@ -79,66 +76,61 @@ namespace LightOff.Host.Session
 
         internal bool Update(float deltaTime)
         {
-            if(SessionState == SessionState.MatchEnded)
-            {
-                return true;
-            }
             var prepareForMatch = PreUpdateChecks();
-            if(prepareForMatch)
-            {
-                var p1 = _world.Players.FirstOrDefault();
-                var p2 = _world.Players.LastOrDefault();
-                if (p1 != null && p2 != null)
-                {
-                    _logger.LogInformation($"Before Update: P1 Pos: {p1.State.Position} P2 Pos: {p2.State.Position}");
-                }
-            }
             _commandHandler.UpdateDeltaTime(deltaTime);
             _server.Update();
-            // TODO: move this stuff into an own Match class
-            // skip one frame to make sure MatchStart event is send after player slot assignments
-            if(prepareForMatch)
+            // TODO: move all the stuff below into an own Match class
+            
+            // Needed to make sure Event is not send to soon.
+            if (_sessionState == SessionState.MatchEnded)
             {
-                _logger.LogInformation("Skip one state check to prepare for match");
-                var p1 = _world.Players.FirstOrDefault();
-                var p2 = _world.Players.LastOrDefault();
-                if (p1 != null && p2 != null)
+                if (!_endEventMessageSent)
                 {
-                    _logger.LogInformation($"P1 Pos: {p1.State.Position} P2 Pos: {p2.State.Position}");
+                    _endEventMessageSent = true;
+                    var eventMessage = _room.CreateEvent<EventMessage>();
+                    eventMessage.EventMessageType = EventMessageType.MatchEnded;
+                    _room.BroadcastEvent(eventMessage);
                 }
                 return true;
             }
-            if (SessionState == SessionState.MatchInit && AllPlayersAreReady())
+            
+            // skip one frame to make sure MatchStart event is send after player slot assignments
+            // I don't know whiy, but this is needed for the order of messages to be received in the correct order
+            if (prepareForMatch)
             {
-                var p1 = _world.Players.FirstOrDefault();
-                var p2 = _world.Players.LastOrDefault();
-                if (p1 != null && p2 != null)
-                {
-                    _logger.LogInformation($"P1 Pos: {p1.State.Position} P2 Pos: {p2.State.Position}");
-                }
-                SessionState = SessionState.MatchStarted;
+                _logger.LogInformation("Skip one state check to prepare for match");
+                return true;
+            }
+            if (_sessionState == SessionState.MatchInit && AllPlayersAreReady())
+            {
+                _sessionState = SessionState.MatchStarted;
                 var eventMessage = _room.CreateEvent<EventMessage>();
                 eventMessage.EventMessageType = EventMessageType.MatchStarted;
                 _logger.LogInformation("Send event Message");
                 _room.BroadcastEvent(eventMessage);
             }
-            else if(SessionState == SessionState.MatchStarted) 
+            else if(_sessionState == SessionState.MatchStarted) 
             {
-                if(_ghostState != null && _ghostState.Visibility < 100 && _ghostState.Visibility > 10) 
+                if (_ghostState != null && _ghostState.Visibility < 100 && _ghostState.Visibility > 10)
                 {
-                    _ghostState.Visibility -= (uint)(10 * deltaTime);
+                    _ghostState.Visibility -= (uint)(100 * deltaTime);
                 }
                 var winState = _world.DetermineWinState();
                 if(winState != WinState.None)
                 {
-                    SessionState = SessionState.MatchEnded;
-                    var eventMessage = _room.CreateEvent<EventMessage>();
-                    eventMessage.EventMessageType = EventMessageType.MatchEnded;
-                    _room.BroadcastEvent(eventMessage);
+                    _sessionState = SessionState.MatchEnded;
+
+                    if (_ghostState != null)
+                    {
+                        _ghostState.Visibility = 100;
+                    }
+                    // make sure Health is send to client
+                    // todo: check if this is really needed
+                    _server.Update();
                     return true;
                 }
             }
-            // If all players hafe left the session, it can be closed!
+            // If all players have left the session, it can be closed!
             if(_playersHaveJoined && _room.Entities.Count == 0)
             {
                 return false;
@@ -148,7 +140,7 @@ namespace LightOff.Host.Session
 
         private bool PreUpdateChecks()
         {
-            if (SessionState == SessionState.MatchInit 
+            if (_sessionState == SessionState.MatchInit 
                 && AllPlayersAreReady() 
                 && !_world.IsPreparedForMatch)
             {
@@ -161,7 +153,7 @@ namespace LightOff.Host.Session
         void PrepareMatch()
         {
             var players = _world.Players;
-            players = Shuffle(players);
+            players = Shuffle(players).ToList();
             for (int i = 0; i < (players.Count() - 1); ++i)
             {
                 var entity = players.ElementAt(i);
@@ -182,7 +174,6 @@ namespace LightOff.Host.Session
                 {
                     entity.State.Position = new Vector2(34, 2);
                 }
-                _logger.LogInformation($"PrepareMatch P1: {entity.State.Position} i {i}");
             }
             // last player is always the ghost!
             var ghost = players.Last();
@@ -191,8 +182,6 @@ namespace LightOff.Host.Session
             _world.SetGhost(ghost);
             _ghostState.Position = new Vector2(18, 10);
             _ghostState.Visibility = 99;
-            
-            //_world.SetGhost(new DummyGhost());
         }
 
         bool AllPlayersAreReady()
@@ -226,8 +215,9 @@ namespace LightOff.Host.Session
         }
 
         bool _playersHaveJoined = false;
-        IEntityState _ghostState;
-        SessionState SessionState = SessionState.MatchInit;
+        IEntityState? _ghostState;
+        SessionState _sessionState = SessionState.MatchInit;
+        bool _endEventMessageSent = false;
         readonly ILogger _logger;
         readonly RailServer _server;
         readonly RailServerRoom _room;

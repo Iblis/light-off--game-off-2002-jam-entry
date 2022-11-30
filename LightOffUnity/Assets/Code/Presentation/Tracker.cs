@@ -13,16 +13,13 @@ namespace LightOff.Presentation
         void Awake()
         {
             _flashLight = GetComponentInChildren<Light2D>();
-        }
-
-        void SetFlashlight(bool enabled)
-        {
-            _flashLight.enabled = enabled;
+            _flashLight.enabled = false;
         }
 
         public override void UpdateFrom(IEntityState state)
         {
             base.UpdateFrom(state);
+            _flashLight.enabled = state.ExecuteAction;
             _flashLight.transform.rotation = Quaternion.AngleAxis(state.Angle * Mathf.Rad2Deg, UnityEngine.Vector3.back);
         }
 

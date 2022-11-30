@@ -1,8 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/GUI/popup.uss?fileID=7433441132597879392&amp;guid=6280a4c0ebc401a408e0e330d9468e32&amp;type=3#popup" />
     <ui:VisualElement class="lightOffPopup centeredPopup" style="width: 50% translate 50% 50%; transform-origin: center; translate: 50% 50%;">
-        <ui:Label tabindex="-1" text="I have accepted the Terms &amp; Condition and am ready to play" display-tooltip-when-elided="true" style="white-space: normal;" />
-        <ui:Toggle label="Accept &amp; Ready" name="readyToggle" style="margin-left: 0;" />
+        <ui:Label tabindex="-1" text="I am ready to start the match" display-tooltip-when-elided="true" style="white-space: normal;" />
+        <ui:Toggle label="Ready" name="readyToggle" class="lightOff-labeledField" style="margin-left: 0;" />
         <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="waitingForPlayers" />
     </ui:VisualElement>
 </ui:UXML>

@@ -11,16 +11,20 @@ namespace LightOff.IO
 
         public float DirectionY => _currentInputData.Y;
 
+        public bool ExecuteAction { get; private set; }
+
         public PlayerInput(Vector2 input)
         {
             _currentInputData = input;
+            ExecuteAction = false;
         }
         
-        public bool Update(Vector2 inputData)
+        public bool Update(Vector2 inputData, bool executeAction)
         {
-            if(inputData != _currentInputData)
+            if(inputData != _currentInputData || executeAction != ExecuteAction)
             {
                 _currentInputData = inputData;
+                ExecuteAction = executeAction;
                 return true;
             }
             return false;

@@ -9,7 +9,7 @@ namespace LightOff.Logic
     {
         Vector2 Position { get; set; }
         uint HitCooldown { get; set; }
-        bool ExecutesAction { get; set; }
+        bool ExecuteAction { get; set; }
         float Angle { get; set; }
         bool IsHit { get; }
 

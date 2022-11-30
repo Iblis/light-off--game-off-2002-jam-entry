@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/GUI/popup.uss?fileID=7433441132597879392&amp;guid=6280a4c0ebc401a408e0e330d9468e32&amp;type=3#popup" />
+    <ui:VisualElement class="lightOffPopup centeredPopup">
+        <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="winnerName" style="-unity-text-align: upper-center;" />
+        <ui:Label tabindex="-1" text="won the match!" display-tooltip-when-elided="true" style="-unity-text-align: upper-center; margin-bottom: 10px; padding-left: 1px; padding-right: 2px; padding-top: 0; padding-bottom: 0;" />
+        <ui:Button text="Leave Match" display-tooltip-when-elided="true" name="leaveButton" />
+    </ui:VisualElement>
+</ui:UXML>

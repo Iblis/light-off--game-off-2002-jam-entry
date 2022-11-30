@@ -3,9 +3,11 @@
 // which can be found in the root folder of this source code package.
 using Cysharp.Threading.Tasks;
 using LightOff.ClientLogic;
+using LightOff.Logic;
 using LightOff.Messaging;
 using MessagePipe;
 using RailgunNet.Connection.Client;
+using RailgunNet.System.Types;
 using System;
 using System.Threading;
 
@@ -15,6 +17,7 @@ namespace LightOff.Presentation
     {
         public IReadOnlyAsyncReactiveProperty<SessionConnectionState> SessionState { get; }
 
+        
         public GameSession(ISessionConnection connection, ISubscriber<EventMessage> eventMessageSubscriber)
         {
             _connection = connection;

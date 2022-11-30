@@ -38,7 +38,7 @@ namespace LightOff.IO
             entityServerSide.AssignController(client);
             entityServerSide.CommandHandler = _commandHandler;
             entityServerSide.State.Position = new System.Numerics.Vector2(10, 10);
-            entityServerSide.State.ExecutesAction = true;
+            entityServerSide.State.ExecuteAction = true;
             _world.AddPlayer(entityServerSide);
             _world.SetGhost(new DummyGhost());
             // TODO: evaluate if ghost data should be send to client
